@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Beaches - Joy Forte</title>
+    <link rel="stylesheet" href="css/beachesstyle.css">
+</head>
+
+<body id="top">
+
+    <!-- Header / Navigation -->
+    <div class="header">
+        <div class="topnav">
+            <a href="index.html">Home</a> |
+            <a href="Resume.html">Resume</a> |
+            <a href="Places.html">Beaches</a> |
+            <a href="Game.html">Game</a>
+        </div>
+
+        <div class="subnav">
+            <a href="#Anna Maria Island, Florida">Bradenton Beach</a> |
+            <a href="#Key West, Florida">Bahia Honda Key</a> |
+            <a href="#Melbourne, Florida">South Patrick Beach</a>
+        </div>
+    </div>
+
+    <!-- Hero Section -->
+    <div class="hero">
+        <h1>Beaches</h1>
+        <h2>My Favorite Beaches I've Been To</h2>
+    </div>
+
+    <!-- Main Content -->
+    <div class="maincontent">
+        <ol class="main-list">
+
+            <!-- FL -->
+    
+    <li id="Anna Maria Island, Florida">Anna Maria Island, Florida
+        <ul>
+            <li>Bradenton Beach
+                <ul>
+                    <li>I went on vacation there in 2023 and 2025.</li>
+                    <li>Why I love this beach:
+                        <ol>
+                            <li>Clear blue water</li>
+                            <li>White sand</li>
+                            <li>Calm waters</li>
+                            <li>Great for boating</li>
+                            <li>Not too crowded</li>
+                        </ol>
+                    </li>
+                </ul>
+            </li>
+        </ul>
+
+        <div class="photo-box">
+            <img src="images/IMG_1821.jpg" alt="Bradenton Beach">
+        </div>
+    </li>
+
+    <li id="Key West, Florida">Key West, Florida
+        <ul>
+            <li>Bahia Honda Key
+                <ul>
+                    <li>I went here for my graduation trip.</li>
+                    <li>Why I love this beach:
+                        <ol>
+                            <li>We were the only people there</li>
+                            <li>Beautiful scenery</li>
+                            <li>Beautiful fish</li>
+                            <li>Swimming is great</li>
+                            <li>Beautiful sunsets</li>
+                        </ol>
+                    </li>
+                </ul>
+            </li>
+        </ul>
+
+        <div class="photo-box">
+            <img src="images/KeyWest.jpg" alt="Bahia Honda Key">
+        </div>
+    </li>
+
+    <li id="Melbourne, Florida">Melbourne, Florida
+        <ul>
+            <li>South Patrick Beach
+                <ul>
+                    <li>This is my hometown beach.</li>
+                    <li>Why I love this beach:
+                        <ol>
+                            <li>Close to home</li>
+                            <li>Beautiful sunsets</li>
+                            <li>So many shells to collect</li>
+                            <li>Nice waves</li>
+                            <li>So many dolphins to see</li>
+                        </ol>
+                    </li>
+                </ul>
+            </li>
+        </ul>
+
+        <div class="photo-box">
+            <img src="images/Melbourne.jpg" alt="South Patrick Beach">
+        </div>
+    </li>
+</ol>
+
+        <!-- YouTube Video -->
+        <div class="video-section">
+        <h3>Melbourne Beach</h3>
+         <iframe width="560" height="315"
+            src="https://www.youtube.com/embed/guA-61vy-ps"
+            allowfullscreen>
+        </iframe>
+        </div>
+        </div>
+
+        <!-- Tableau Graph -->
+        <div class="tableau-section">
+            <h3>Travel Visualization</h3>
+
+            <div class='tableauPlaceholder' id='vizTableau'>
+                <noscript>
+                    <img src='https://public.tableau.com/static/images/Re/RegionalSampleWorkbook/Stocks/1_rss.png'>
+                </noscript>
+
+                <object class='tableauViz'>
+                    <param name='host_url' value='https://public.tableau.com/' />
+                    <param name='embed_code_version' value='3' />
+                    <param name='name' value='RegionalSampleWorkbook/Stocks' />
+                </object>
+            </div>
+        </div>
+
+        <!-- Back to Top -->
+        <div class="backtotop">
+            <a href="#top">Back to Top</a>
+        </div>
+
+    </div>
+
+    <!-- Tableau Script -->
+    <script>
+        var divElement = document.getElementById('vizTableau');
+        var vizElement = divElement.getElementsByTagName('object')[0];
+        vizElement.style.width = "100%";
+        vizElement.style.height = "600px";
+
+        var scriptElement = document.createElement("script");
+        scriptElement.src = "https://public.tableau.com/javascripts/api/viz_v1.js";
+        vizElement.parentNode.insertBefore(scriptElement, vizElement);
+    </script>
+
+</body>
+</html>

@@ -1,0 +1,334 @@
+<<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <title>Joy Forte - Easter Hangman</title>
+
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, Helvetica, sans-serif;
+            background: linear-gradient(to bottom, #dff6ff, #fff8dc, #ffe4f2);
+            min-height: 100vh;
+            color: #333;
+        }
+
+        .navbar {
+            display: flex;
+            justify-content: flex-end;
+            gap: 20px;
+            padding: 20px 40px;
+            background-color: rgba(255, 255, 255, 0.85);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+
+        .navbar a {
+            text-decoration: none;
+            color: #7a3e65;
+            font-weight: bold;
+            font-size: 18px;
+        }
+
+        .navbar a:hover {
+            color: #ff7eb6;
+        }
+
+        .hero {
+            text-align: center;
+            padding: 40px 20px 20px 20px;
+        }
+
+        .hero h1 {
+            font-size: 56px;
+            margin-bottom: 10px;
+            color: #7a3e65;
+        }
+
+        .hero p {
+            font-size: 22px;
+            color: #5f6f52;
+            margin-top: 0;
+        }
+
+        .game-box {
+            max-width: 900px;
+            margin: 20px auto 50px auto;
+            background-color: rgba(255,255,255,0.92);
+            border-radius: 25px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+            padding: 30px;
+            text-align: center;
+        }
+
+        .hangman-drawing {
+            font-family: monospace;
+            font-size: 24px;
+            line-height: 1.2;
+            white-space: pre;
+            background: #fdf6ff;
+            border-radius: 15px;
+            padding: 20px;
+            margin: 0 auto 25px auto;
+            width: fit-content;
+            color: #6a4c93;
+        }
+
+        .category {
+            font-size: 20px;
+            margin-bottom: 15px;
+            color: #5f6f52;
+            font-weight: bold;
+        }
+
+        .word-display {
+            font-size: 38px;
+            letter-spacing: 10px;
+            margin: 20px 0;
+            font-weight: bold;
+            color: #ff7eb6;
+        }
+
+        .info {
+            font-size: 20px;
+            margin: 12px 0;
+        }
+
+        .letters {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(45px, 1fr));
+            gap: 10px;
+            margin-top: 25px;
+        }
+
+        .letters button {
+            padding: 12px;
+            font-size: 18px;
+            border: none;
+            border-radius: 12px;
+            background-color: #ffd6e8;
+            color: #7a3e65;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .letters button:hover {
+            background-color: #ffb7d5;
+        }
+
+        .letters button:disabled {
+            background-color: #ddd;
+            color: #888;
+            cursor: not-allowed;
+        }
+
+        .controls {
+            margin-top: 25px;
+        }
+
+        .controls button {
+            padding: 14px 24px;
+            font-size: 18px;
+            border: none;
+            border-radius: 14px;
+            background-color: #ff9f68;
+            color: white;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .controls button:hover {
+            background-color: #ff8440;
+        }
+
+        .message {
+            font-size: 24px;
+            font-weight: bold;
+            margin-top: 20px;
+            min-height: 30px;
+        }
+    </style>
+</head>
+<body>
+
+    <nav class="navbar">
+        <a href="index.html">Home</a>
+        <a href="Resume.html">Resume</a>
+        <a href="Beaches.html">Beaches</a>
+        <a href="Game.html">Game</a>
+    </nav>
+
+    <section class="hero">
+        <h1>Easter Hangman</h1>
+        <p>Guess the Easter word before the bunny runs out of chances.</p>
+    </section>
+
+    <div class="game-box">
+        <div class="hangman-drawing" id="hangmanDrawing"></div>
+
+        <div class="category" id="category">Category: Easter</div>
+
+        <div class="word-display" id="wordDisplay">_ _ _ _ _</div>
+
+        <div class="info">Wrong guesses left: <span id="guessesLeft">6</span></div>
+        <div class="info">Guessed letters: <span id="guessedLetters">None</span></div>
+
+        <div class="message" id="message"></div>
+
+        <div class="letters" id="letters"></div>
+
+        <div class="controls">
+            <button onclick="startGame()">Play Again</button>
+        </div>
+    </div>
+
+    <script>
+        const words = [
+            "BUNNY",
+            "EGG",
+            "BASKET",
+            "CHICK",
+            "SPRING",
+            "TULIP",
+            "CANDY",
+            "PARADE",
+            "PASTEL",
+            "CARROT",
+            "LILIES",
+            "RABBIT"
+        ];
+
+        let selectedWord = "";
+        let guessed = [];
+        let wrongGuesses = 0;
+        const maxWrong = 6;
+
+        const hangmanStages = [
+`  +---+
+  |   |
+      |
+      |
+      |
+      |
+=========`,
+
+`  +---+
+  |   |
+  O   |
+      |
+      |
+      |
+=========`,
+
+`  +---+
+  |   |
+  O   |
+  |   |
+      |
+      |
+=========`,
+
+`  +---+
+  |   |
+  O   |
+ /|   |
+      |
+      |
+=========`,
+
+`  +---+
+  |   |
+  O   |
+ /|\\  |
+      |
+      |
+=========`,
+
+`  +---+
+  |   |
+  O   |
+ /|\\  |
+ /    |
+      |
+=========`,
+
+`  +---+
+  |   |
+  O   |
+ /|\\  |
+ / \\  |
+      |
+=========`
+        ];
+
+        function startGame() {
+            selectedWord = words[Math.floor(Math.random() * words.length)];
+            guessed = [];
+            wrongGuesses = 0;
+            document.getElementById("message").textContent = "";
+            createLetterButtons();
+            updateDisplay();
+        }
+
+        function createLetterButtons() {
+            const lettersDiv = document.getElementById("letters");
+            lettersDiv.innerHTML = "";
+
+            for (let i = 65; i <= 90; i++) {
+                const letter = String.fromCharCode(i);
+                const btn = document.createElement("button");
+                btn.textContent = letter;
+                btn.onclick = () => guessLetter(letter, btn);
+                lettersDiv.appendChild(btn);
+            }
+        }
+
+        function guessLetter(letter, button) {
+            button.disabled = true;
+            guessed.push(letter);
+
+            if (!selectedWord.includes(letter)) {
+                wrongGuesses++;
+            }
+
+            updateDisplay();
+            checkGameStatus();
+        }
+
+        function updateDisplay() {
+            const displayedWord = selectedWord
+                .split("")
+                .map(letter => guessed.includes(letter) ? letter : "_")
+                .join(" ");
+
+            document.getElementById("wordDisplay").textContent = displayedWord;
+            document.getElementById("guessesLeft").textContent = maxWrong - wrongGuesses;
+            document.getElementById("guessedLetters").textContent = guessed.length ? guessed.join(", ") : "None";
+            document.getElementById("hangmanDrawing").textContent = hangmanStages[wrongGuesses];
+        }
+
+        function checkGameStatus() {
+            const message = document.getElementById("message");
+            const allButtons = document.querySelectorAll(".letters button");
+
+            if (selectedWord.split("").every(letter => guessed.includes(letter))) {
+                message.textContent = "You won. Happy Easter!";
+                message.style.color = "#2e8b57";
+                allButtons.forEach(btn => btn.disabled = true);
+            } else if (wrongGuesses >= maxWrong) {
+                message.textContent = `You lost. The word was ${selectedWord}.`;
+                message.style.color = "#c0392b";
+                document.getElementById("wordDisplay").textContent = selectedWord.split("").join(" ");
+                allButtons.forEach(btn => btn.disabled = true);
+            }
+        }
+
+        startGame();
+    </script>
+
+</body>
+</html>
